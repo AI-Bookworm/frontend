@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import { View, Button, Text, Image } from "react-native";
 import * as ImagePicker from "expo-image-picker";
 import axios from "axios";
+import ip from "./ip";
 
 const App = () => {
   const [image, setImage] = useState(null);
@@ -34,7 +35,7 @@ const App = () => {
     });
 
     try {
-      const res = await axios.post("http:///api/upload-image", formData, {
+      const res = await axios.post(`http://${ip}:5001/api/upload-image`, formData, {
         headers: {
           "Content-Type": "multipart/form-data",
         },
@@ -58,8 +59,8 @@ const App = () => {
       <Button title="Upload Image" onPress={uploadImage} />
       {response && (
         <View style={{ marginTop: 20 }}>
-          <Text>Response from Backend:</Text>
-          <Text>{JSON.stringify(response, null, 2)}</Text>
+          <Text style={{ color: 'white' }}>Response from Backend:</Text>
+          <Text style={{ color: 'white' }}>{JSON.stringify(response, null, 2)}</Text>
         </View>
       )}
     </View>

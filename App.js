@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { View, Button, Text, Image } from "react-native";
+import { View, Button, Text, Image, ScrollView } from "react-native";
 import * as ImagePicker from "expo-image-picker";
 import axios from "axios";
 import ip from "./ip";
@@ -8,7 +8,6 @@ const App = () => {
   const [image, setImage] = useState(null);
   const [response, setResponse] = useState(null);
 
-  // Pick an image from the gallery
   const pickImage = async () => {
     let result = await ImagePicker.launchImageLibraryAsync({
       mediaTypes: ImagePicker.MediaTypeOptions.Images,
@@ -20,7 +19,6 @@ const App = () => {
     }
   };
 
-  // Upload the image to the backend
   const uploadImage = async () => {
     if (!image) {
       alert("Please select an image first!");
@@ -58,10 +56,16 @@ const App = () => {
       )}
       <Button title="Upload Image" onPress={uploadImage} />
       {response && (
-        <View style={{ marginTop: 20 }}>
-          <Text style={{ color: 'white' }}>Response from Backend:</Text>
-          <Text style={{ color: 'white' }}>{JSON.stringify(response, null, 2)}</Text>
-        </View>
+        <ScrollView style={{ marginTop: 20, maxHeight: 300, width: '100%' }} contentContainerStyle={{ paddingHorizontal: 20 }}>
+          <Text style={{ color: 'black', fontWeight: 'bold' }}>Response from Backend:</Text>
+          <Text style={{ color: 'black', flexWrap: 'wrap' }}>Title: {response.title}</Text>
+          <Text style={{ color: 'black', flexWrap: 'wrap' }}>Subtitle: {response.subtitle}</Text>
+          <Text style={{ color: 'black', flexWrap: 'wrap' }}>Authors: {Array.isArray(response.authors) ? response.authors.join(", ") : response.authors}</Text>
+          <Text style={{ color: 'black', flexWrap: 'wrap' }}>Rating: {response.average_rating}</Text>
+          <Text style={{ color: 'black', flexWrap: 'wrap' }}>Page Count: {response.page_count}</Text>
+          <Text style={{ color: 'black', flexWrap: 'wrap' }}>Categories: {response.categories}</Text>
+          <Text style={{ color: 'black', flexWrap: 'wrap' }}>Description: {response.description}</Text>
+        </ScrollView>
       )}
     </View>
   );

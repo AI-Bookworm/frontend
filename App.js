@@ -3,10 +3,19 @@ import { View, Button, Text, Image, ScrollView } from "react-native";
 import * as ImagePicker from "expo-image-picker";
 import axios from "axios";
 import ip from "./ip";
+import {Appearance} from 'react-native';
 
 const App = () => {
   const [image, setImage] = useState(null);
   const [response, setResponse] = useState(null);
+  
+  const colorScheme = Appearance.getColorScheme();
+  let textColor = 'white'
+  let backgroundColor = 'black'
+  if (colorScheme === 'light') {
+    textColor = 'black'
+    backgroundColor = 'white'
+  }
 
   const pickImage = async () => {
     let result = await ImagePicker.launchImageLibraryAsync({
@@ -46,7 +55,7 @@ const App = () => {
   };
 
   return (
-    <View style={{ flex: 1, justifyContent: "center", alignItems: "center" }}>
+    <View style={{ flex: 1, justifyContent: "center", alignItems: "center", backgroundColor: backgroundColor}}>
       <Button title="Pick an Image" onPress={pickImage} />
       {image && (
         <Image
@@ -57,14 +66,14 @@ const App = () => {
       <Button title="Upload Image" onPress={uploadImage} />
       {response && (
         <ScrollView style={{ marginTop: 20, maxHeight: 300, width: '100%' }} contentContainerStyle={{ paddingHorizontal: 20 }}>
-          <Text style={{ color: 'black', fontWeight: 'bold' }}>Response from Backend:</Text>
-          <Text style={{ color: 'black', flexWrap: 'wrap' }}>Title: {response.title}</Text>
-          <Text style={{ color: 'black', flexWrap: 'wrap' }}>Subtitle: {response.subtitle}</Text>
-          <Text style={{ color: 'black', flexWrap: 'wrap' }}>Authors: {Array.isArray(response.authors) ? response.authors.join(", ") : response.authors}</Text>
-          <Text style={{ color: 'black', flexWrap: 'wrap' }}>Rating: {response.average_rating}</Text>
-          <Text style={{ color: 'black', flexWrap: 'wrap' }}>Page Count: {response.page_count}</Text>
-          <Text style={{ color: 'black', flexWrap: 'wrap' }}>Categories: {response.categories}</Text>
-          <Text style={{ color: 'black', flexWrap: 'wrap' }}>Description: {response.description}</Text>
+          <Text style={{ color: textColor, fontWeight: 'bold' }}>Response from Backend:</Text>
+          <Text style={{ color: textColor, flexWrap: 'wrap' }}>Title: {response.title}</Text>
+          <Text style={{ color: textColor, flexWrap: 'wrap' }}>Subtitle: {response.subtitle}</Text>
+          <Text style={{ color: textColor, flexWrap: 'wrap' }}>Authors: {Array.isArray(response.authors) ? response.authors.join(", ") : response.authors}</Text>
+          <Text style={{ color: textColor, flexWrap: 'wrap' }}>Rating: {response.average_rating}</Text>
+          <Text style={{ color: textColor, flexWrap: 'wrap' }}>Page Count: {response.page_count}</Text>
+          <Text style={{ color: textColor, flexWrap: 'wrap' }}>Categories: {response.categories}</Text>
+          <Text style={{ color: textColor, flexWrap: 'wrap' }}>Description: {response.description}</Text>
         </ScrollView>
       )}
     </View>
